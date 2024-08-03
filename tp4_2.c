@@ -17,10 +17,8 @@ struct Nodo *Siguiente;
 Nodo *crearListaVacia();
 Nodo *crearTareas(int *id);
 void insertarNodo(Nodo **pendientes, Nodo *nuevoNodo);
-//void tareasRealizadas(Nodo **pendientes, Nodo **realizadas); sustitui por mover nodo
 void mostrarTareas(Nodo *pendientes, Nodo *realizadas);
 void mostarTareaEspecifica(Nodo *pendientes, Nodo *realizadas);
-//void eliminarNodo(Nodo **pendientes, int id);
 void moverNodo(Nodo **pendientes, Nodo **realizadas);
 
 //**************INICIO DEL MAIN****************
@@ -115,32 +113,6 @@ void mostrarTareas(Nodo *pendientes, Nodo *realizadas){
 
 }
 
-/*void tareasRealizadas(Nodo **pendientes, Nodo **realizadas){
-
-    int id, ok;
-
-    do
-    {
-
-            printf("\n Ingrese el id de la tarea realizada: ");
-            scanf("%d", &id);
-
-            Nodo *Aux = *pendientes;
-            while(Aux && Aux->T.TareaID != id) 
-            {
-            Aux = Aux->Siguiente;
-            }
-
-            insertarNodo(realizadas, Aux);
-            eliminarNodo(pendientes, id);
-
-printf("\n desea agregar otra tarea 1-si\n 0-no ");
-scanf("%d", &ok);
-    } while (ok != 0);
-
-
-}*/
-
 
 void mostarTareaEspecifica(Nodo *pendientes, Nodo *realizadas) {
     int id;
@@ -150,12 +122,12 @@ void mostarTareaEspecifica(Nodo *pendientes, Nodo *realizadas) {
     Nodo *AuxP = pendientes;
     Nodo *AuxR = realizadas;
 
-    // Buscar la tarea con el ID especificado en la lista de pendientes
+ 
     while (AuxP != NULL && AuxP->T.TareaID != id) {
         AuxP = AuxP->Siguiente;
     }
 
-    // Buscar la tarea con el ID especificado en la lista de realizadas
+  
     while (AuxR != NULL && AuxR->T.TareaID != id) {
         AuxR = AuxR->Siguiente;
     }
@@ -177,28 +149,6 @@ void mostarTareaEspecifica(Nodo *pendientes, Nodo *realizadas) {
 
 
 
-
-/*void eliminarNodo(Nodo **pendientes, int id){
-    Nodo **aux = pendientes;
-
-    while (*aux != NULL && (*aux)->T.TareaID != id)
-    {
-        aux = &(*aux)->Siguiente;
-    }
-    
-    if (*aux)
-    {
-        Nodo *temp = *aux;
-        *aux = (*aux)->Siguiente;
-
-        free(temp);
-    }
-    
-}*/
-
-
-
-
 void moverNodo(Nodo **pendientes, Nodo **realizadas) {
     int id, otra;
     do {
@@ -208,7 +158,6 @@ void moverNodo(Nodo **pendientes, Nodo **realizadas) {
         Nodo *actual = *pendientes;
         Nodo *previo = NULL;
 
-        // Buscar el nodo con el ID dado en la lista de pendientes
         while (actual != NULL && actual->T.TareaID != id) {
             previo = actual;
             actual = actual->Siguiente;
@@ -217,20 +166,18 @@ void moverNodo(Nodo **pendientes, Nodo **realizadas) {
         if (actual != NULL) {
             // Desenlazo el nodo de la lista de pendientes
             if (previo != NULL) {
-                previo->Siguiente = actual->Siguiente;
+                previo->Siguiente = actual->Siguiente;//la id corresponde a un nodo interno
             } else {
-                *pendientes = actual->Siguiente;
+                *pendientes = actual->Siguiente;//primer nodo
             }
 
             // creo un nodo y copio los datos
             Nodo *nuevoNodo = (Nodo *)malloc(sizeof(Nodo));
             nuevoNodo->T.TareaID = actual->T.TareaID;
             nuevoNodo->T.Duracion = actual->T.Duracion;
-            nuevoNodo->T.Descripcion = strdup(actual->T.Descripcion); // lafuncion hace la reserva de memora
+            nuevoNodo->T.Descripcion = strdup(actual->T.Descripcion); // la funcion hace la reserva de memora
             nuevoNodo->Siguiente = *realizadas;
             *realizadas = nuevoNodo;
-
-           
 
             // Libero la memoria del nodo de pendientes
             free(actual->T.Descripcion);
